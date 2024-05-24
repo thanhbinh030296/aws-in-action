@@ -139,6 +139,14 @@ resource "aws_instance" "web" {
 
   iam_instance_profile = aws_iam_instance_profile.ec2_ssm_iam_intsance_profile.name
 
+  user_data = <<EOF
+                #/bin/sh
+                sudo yum -y install httpd
+                sudo systemctl start httpd
+                sudo systemctl enable httpd
+                sudo echo '<!doctype html><html lang="en"><head><meta charset="utf-8"><title>Hello AWS in Action!</title></head><body><p>Hello AWS in Action!</p></body></html>' > /var/www/html/index.html
+                EOF
+
   associate_public_ip_address = true
   tags = {
     Name = "HelloWorld"
